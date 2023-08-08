@@ -1,4 +1,5 @@
 <script>
+  import { writable } from 'svelte/store';
   import MainSection from './MainSection.svelte';
 
 </script>
