@@ -5,13 +5,13 @@ import { getStorage } from "firebase/storage";
 import { writable, type Readable, derived } from "svelte/store";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyCY6wy-0PzALIeTgmDvMolSO7BmJI6_pOU",
-    authDomain: "cdass-5d607.firebaseapp.com",
-    projectId: "cdass-5d607",
-    storageBucket: "cdass-5d607.appspot.com",
-    messagingSenderId: "529171788666",
-    appId: "1:529171788666:web:2e6458e7388c05542adcc3",
-    measurementId: "G-TQWB0N2SX1"
+  apiKey: "AIzaSyCY6wy-0PzALIeTgmDvMolSO7BmJI6_pOU",
+  authDomain: "cdass-5d607.firebaseapp.com",
+  projectId: "cdass-5d607",
+  storageBucket: "cdass-5d607.appspot.com",
+  messagingSenderId: "529171788666",
+  appId: "1:529171788666:web:2e6458e7388c05542adcc3",
+  measurementId: "G-TQWB0N2SX1"
 };
 
 // Initialize Firebase
@@ -56,18 +56,11 @@ export function docStore<T>(
 }
 
 
-interface UserData {
-  username: string;
-  photoURL: string;
-  points: number;
-  admin: boolean;
-  newbie: boolean;
-}
 
-export const userData: Readable<UserData | null> = derived(user, ($user, set) => { 
+export const userData: Readable<UserData | null> = derived(user, ($user, set) => {
   if ($user) {
     return docStore<UserData>(`users/${$user.uid}`).subscribe(set);
   } else {
-    set(null); 
+    set(null);
   }
-});  
+});
