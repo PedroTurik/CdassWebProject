@@ -12,4 +12,6 @@ interface ProblemData {
     points: number;
     id: number;
     answer: string;
+    input: string;
+    begginer: boolean;
 }

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
     import type { PageData } from './$types';
     
     export let data: PageData;
@@ -7,15 +6,14 @@
     let title: HTMLDivElement;
     let text: HTMLDivElement;
 
-    onMount(() => {
-        title.innerHTML = data.title;
-        text.innerHTML = data.text;
-    })
+
 
 </script>
 
-<div bind:this={title} class="text-lg">
+<div bind:this={title} class="text-7xl text-accent text-center py-10">
+    {data.title}
 </div>
 
-<div bind:this={text} class="mx-32 article">
+<div bind:this={text} class="mx-32 whitespace-pre-wrap">
+    {data.text}
 </div>
