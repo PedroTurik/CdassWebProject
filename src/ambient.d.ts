@@ -15,3 +15,10 @@ interface ProblemData {
     input: string;
     begginer: boolean;
 }
+
+interface UserProblemData {
+    code: string;
+    problem_id: number;
+    rating: number;
+    uid: string
+}
