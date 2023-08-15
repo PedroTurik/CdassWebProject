@@ -1,7 +1,8 @@
-import { addDoc, collection, getDocs, limit, orderBy, query } from 'firebase/firestore';
+import { collection, getDocs } from 'firebase/firestore';
 import type { PageServerLoad } from './$types';
 import { db } from '$lib/firebase';
 import { error, type Actions } from '@sveltejs/kit';
+import { adminDB } from '$lib/server/admin';
 
 
 export const load = (async () => {
@@ -39,24 +40,23 @@ export const actions = {
         const answer = formData.get("answer") as string;
         const input = formData.get("input") as string;
         const begginerCheck = formData.get("begginer-check") as string;
-        console.log(begginerCheck)
 
         if (!title || !text || !answer) {
             throw error(500, "erros in formData")
         }
 
-        const collectionRef = collection(db, "problems");
+        // const collectionRef = collection(db, "problems");
 
-        const queryRef = query(
-            collectionRef,
-            orderBy("id", "desc"),
-            limit(1)
-        );
+        // const queryRef = query(
+        //     collectionRef,
+        //     orderBy("id", "desc"),
+        //     limit(1)
+        // );
 
-        const snapshot = await getDocs(queryRef);
-        const data = snapshot.docs[0]?.data() as ProblemData;
+        // const snapshot = await getDocs(queryRef);
+        // const data = snapshot.docs[0]?.data() as ProblemData;
         
-        const id = (data?.id ?? 0) + 1
+        const id = (await adminDB.collection("problems").count().get()).data().count;
         const begginer = begginerCheck == 'on'
         
         const problemData: ProblemData = {
@@ -69,10 +69,9 @@ export const actions = {
             begginer: begginer,
         }
 
-        const problemsRef = collection(db, "problems");
-        const docRef = await addDoc(problemsRef, problemData)
+        const docAdded = await adminDB.collection("problems").doc("" + id).set(problemData)
 
-        if (!docRef.id) {
+        if (!docAdded.writeTime) {
             throw error(500, "failed to add problem to firestore")
         }
 

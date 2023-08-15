@@ -3,6 +3,10 @@
     import { auth, userData } from '$lib/firebase';
     import AuthCheck from '$lib/components/AuthCheck.svelte';
 
+    async function signOutSSR() {
+      const res = await fetch("/api/signin", { method: "DELETE" });
+      await signOut(auth);
+    }
 
 </script>
 
@@ -12,7 +16,7 @@
         <div class="text-success text-xl mx-auto"> Pontos Totais: {$userData?.points}</div>
     
         <a href="/" class="mx-auto">
-            <button class="btn btn-primary" on:click={() => signOut(auth)}>Sign Out</button>
+            <button class="btn btn-primary" on:click={signOutSSR}>Sign Out</button>
         </a>
     </div>
 

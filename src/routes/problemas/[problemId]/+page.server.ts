@@ -33,16 +33,15 @@ export const load = (async ({ params }) => {
 }) satisfies PageServerLoad;
 
 export const actions: Actions = {
-  default: async ({ request }) => {
+  default: async ({ locals, request }) => {
 
     const data = await request.formData();
     const username = data.get('username') as string;
-    const uid = data.get('uid') as string;
+    const uid = locals.userID as string;
     const problemId = data.get('problemId') as string;
     const answer = data.get('answer') as string;
 
     const docRef = await adminDB.collection("user_problem").doc(username + "-" + problemId).get()
-    console.log(docRef)
     const exists = docRef.exists;
 
     if (exists) {
@@ -54,12 +53,10 @@ export const actions: Actions = {
 
     const problemData = snap.docs[0]?.data() as ProblemData;
     if (problemData.answer == answer) {
-      console.log("SUCCESS")
       confirmAnswer(problemData, username, problemId, uid);
       return {status: "success"};
 
     } else {
-      console.log("ERROOU")
       return {status: "wrong"};
     }
   }
@@ -72,13 +69,21 @@ async function confirmAnswer(problemData: ProblemData, username: string, problem
     rating: 0,
     uid: uid,
   };
-  console.log(userProblemData)
 
-  const userName = username;
+  try {
+    const batch = adminDB.batch();
+    const answerRef = adminDB.collection("user_problem").doc(username + "-" + problemId)
+    const userRef = adminDB.collection("users").doc(uid)
+    const problemRef = adminDB.collection("problems").doc(problemId)
+    batch.set(answerRef, userProblemData)
+    batch.update(userRef, { points: FieldValue.increment(problemData.points)})
+    batch.update(problemRef, { points: FieldValue.increment(-5)})
+    batch.commit()
+  } catch (e) {
+    throw error(500, "Error trying to update datase with answer")
+  }
 
-  await adminDB.collection("user_problem").doc(userName + "-" + problemId).set(userProblemData)
 
-  await adminDB.collection("users").doc(uid).update({ points: FieldValue.increment(problemData.points)})
 
 
 }

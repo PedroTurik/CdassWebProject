@@ -67,15 +67,16 @@
     {data.text}
 </div>
 
-<AuthCheck>
-    <form class="text-center my-10" method="POST" >
-        <input type="hidden" name="username" value={$userData?.username}>
-        <input type="hidden" name="problemId" value={problemId}>
-        <input type="hidden" name="uid" value={$user?.uid}>
-        <input type="text" name="answer" class="input input-success" />
-        <button class="btn btn-success">
-            checar resposta</button
-        >
-    </form>
-</AuthCheck>
+<div class="w-1/5 m-auto">
+    <AuthCheck>
+        <form class="flex flex-row text-center my-10" method="POST" >
+            <input type="hidden" name="username" value={$userData?.username}>
+            <input type="hidden" name="problemId" value={problemId}>
+            <input type="text" name="answer" class="input input-success" />
+            <button class="btn btn-success">
+                checar resposta</button
+            >
+        </form>
+    </AuthCheck>
+</div>
 
