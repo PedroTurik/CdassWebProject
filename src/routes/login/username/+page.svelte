@@ -4,7 +4,7 @@
   import { doc, getDoc, writeBatch } from "firebase/firestore";
 
   let username = "";
-  let begginer: boolean;
+  let begginer: boolean = false;
   let loading = false;
   let isAvailable = false;
 
