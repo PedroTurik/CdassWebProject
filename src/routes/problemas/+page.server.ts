@@ -4,8 +4,6 @@ import { db } from '$lib/firebase';
 import { error, type Actions } from '@sveltejs/kit';
 import { adminDB } from '$lib/server/admin';
 
-type TableProblemData = Pick<ProblemData, "id" | "title" | "points">;
-
 
 export const load = (async () => {
 

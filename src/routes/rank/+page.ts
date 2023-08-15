@@ -22,18 +22,18 @@ export const load = (async () => {
     const snapIntermediate = await getDocs(queryRefIntermediate);
     const snapNewbie = await getDocs(queryRefNewbie);
 
-    const interRank = [] as UserData[];
-    const begginerRank = [] as UserData[];
+    const interRank = [] as RankUserData[];
+    const begginerRank = [] as RankUserData[];
 
     snapIntermediate.docs?.forEach((doc) => {
         interRank.push(doc.data() as UserData);
     })
 
     snapNewbie.docs?.forEach((doc) => {
-        begginerRank.push(doc.data() as UserData);
+        const data = doc.data() as UserData;
+        begginerRank.push({username: data.username, points: data.points});
     })
 
-    console.log("SAVEME")
 
     return {
         interRank: interRank,

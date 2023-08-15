@@ -4,6 +4,7 @@
   import { doc, getDoc, writeBatch } from "firebase/firestore";
 
   let username = "";
+  let begginer: boolean;
   let loading = false;
   let isAvailable = false;
 
@@ -34,7 +35,7 @@
       username: username,
       photoURL: $user?.photoURL ?? null,
       admin: false,
-      newbie: true,
+      newbie: begginer,
       points: 0,
     });
 
@@ -58,16 +59,24 @@
     <p>Nomes de usuário não podem ser modificados</p>
   {:else}
     <form class="w-2/5 space-y-5" on:submit|preventDefault={confirmUsername}>
-      <input
-        type="text"
-        placeholder="Username"
-        class="input input-bordered w-full input-success"
-        class:input-error={!isValid && isTouched}
-        class:input-warning={isTaken}
-        class:input-success={isAvailable && isValid && !loading}
-        bind:value={username}
-        on:input={checkAvailability}
-      />
+      <div class="flex flex-col lg:flex-row gap-4">
+        <input
+          type="text"
+          placeholder="Username"
+          class="input input-bordered w-full input-success"
+          class:input-error={!isValid && isTouched}
+          class:input-warning={isTaken}
+          class:input-success={isAvailable && isValid && !loading}
+          bind:value={username}
+          on:input={checkAvailability}
+        />
+        <div class="form-control">
+          <label class="cursor-pointer label text-right">
+            <span class="label-text m-1">Iniciante?</span>
+            <input bind:checked={begginer} type="checkbox" class="checkbox checkbox-secondary" />
+          </label>
+        </div>
+      </div>
       <div class="my-4 min-h-16 px-8 w-full">
         {#if loading && isTouched}
           <p class="text-secondary">Checando viabilidade de @{username}...</p>

@@ -6,6 +6,8 @@ interface UserData {
     newbie: boolean;
 }
 
+type RankUserData = Pick<UserData, "username" | "points">
+
 interface ProblemData {
     title: string;
     text: string;
@@ -15,6 +17,9 @@ interface ProblemData {
     input: string;
     begginer: boolean;
 }
+
+type TableProblemData = Pick<ProblemData, "id" | "title" | "points">;
+
 
 interface UserProblemData {
     code: string;
