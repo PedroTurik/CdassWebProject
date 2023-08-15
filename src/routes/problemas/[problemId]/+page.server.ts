@@ -27,7 +27,8 @@ export const load = (async ({ params }) => {
   return {
     title: data.title,
     points: data.points,
-    text: data.text
+    text: data.text,
+    input: data.input
   };
 
 }) satisfies PageServerLoad;

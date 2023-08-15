@@ -4,27 +4,28 @@ import { db } from '$lib/firebase';
 import { error, type Actions } from '@sveltejs/kit';
 import { adminDB } from '$lib/server/admin';
 
+type TableProblemData = Pick<ProblemData, "id" | "title" | "points">;
+
 
 export const load = (async () => {
 
     const querySnapshot = await getDocs(collection(db, "problems"));
 
-    const problems: ProblemData[] = [];
-    const begginerProblems: ProblemData[] = [];
-    
+    const problems: TableProblemData[] = [];
+    const begginerProblems: TableProblemData[] = [];
+
     querySnapshot.forEach((doc) => {
         const p = doc.data() as ProblemData
-        
         if (p.begginer) {
-            begginerProblems.push(p);
+            begginerProblems.push({ points: p.points, title: p.title, id: p.id });
         } else {
-            problems.push(p);
+            problems.push({ points: p.points, title: p.title, id: p.id });
         }
     });
-    
+
     problems.sort((a, b) => a.id - b.id)
     begginerProblems.sort((a, b) => a.id - b.id)
-    
+
     return {
         problems: problems,
         begginerProblems: begginerProblems
@@ -55,10 +56,10 @@ export const actions = {
 
         // const snapshot = await getDocs(queryRef);
         // const data = snapshot.docs[0]?.data() as ProblemData;
-        
+
         const id = (await adminDB.collection("problems").count().get()).data().count;
         const begginer = begginerCheck == 'on'
-        
+
         const problemData: ProblemData = {
             title: title,
             text: text,

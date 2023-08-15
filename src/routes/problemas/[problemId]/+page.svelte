@@ -1,13 +1,25 @@
 <script lang="ts">
     import { page } from "$app/stores";
     import type { ActionData, PageData } from "./$types";
-    import { user, userData } from "$lib/firebase";
+    import { userData } from "$lib/firebase";
     import AuthCheck from "$lib/components/AuthCheck.svelte";
+    import { error } from "@sveltejs/kit";
+    import { enhance } from "$app/forms";
 
     export let data: PageData;
     let problemId: number = +$page.url.pathname.split("/")[2];
 
     export let form: ActionData;
+
+    function viewInput() {
+        let wnd = window.open("about:blank", "", "_blank");
+        if (!wnd) {
+            throw error(500, 'i have no clue')
+        }
+        
+        wnd.document.write(data.input);
+    }
+
 </script>
 
 {#if form?.status == 'wrong'}
@@ -67,9 +79,13 @@
     {data.text}
 </div>
 
+<div>
+    <button on:click={viewInput} class="btn btn-secondary m-10"> Ver input </button>
+</div>
+
 <div class="w-1/5 m-auto">
     <AuthCheck>
-        <form class="flex flex-row text-center my-10" method="POST" >
+        <form class="flex flex-row text-center my-10" method="POST" use:enhance>
             <input type="hidden" name="username" value={$userData?.username}>
             <input type="hidden" name="problemId" value={problemId}>
             <input type="text" name="answer" class="input input-success" />
