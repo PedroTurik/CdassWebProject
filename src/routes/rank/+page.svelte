@@ -4,31 +4,27 @@
     let checked: boolean;
 
     export let data: PageData;
-    let curRank: RankUserData[];
-    $: if (!checked) {
-        curRank = data.interRank;
-    } else {
-        curRank = data.begginerRank;
-    }
-
-    console.log("inter", data.interRank)
-    console.log("beg", data.begginerRank)
-    console.log("cur", curRank!)
-    
 </script>
 
-<div class="flex flex-col">
-    <label class="swap text-xl p-20 text-center">
-        <input bind:checked={checked} type="checkbox" style="display: none;" />
-        <div class="swap-off">Intermediário</div>
-        <div class="swap-on">Iniciante</div>
-    </label>
-
-    {#each curRank as user, i}
-        <div class="text-center">
-            {i+1}. 
-            {user.username}:
-            {user.points}
-        </div>
-    {/each}
+<div class="grid grid-cols-2 mx-10">
+    <div class="m-5 text-center card-title card">Intermediário</div>
+    <div class="m-5 text-center card-title card">Iniciante</div>
+    <div class="flex flex-col w-1/2 m-auto">
+        {#each data.interRank as user, i}
+            <div >
+                {i + 1}.
+                {user.username}:
+                {user.points}
+            </div>
+        {/each}
+    </div>
+    <div class="flex flex-col w-1/2 m-auto">
+        {#each data.begginerRank as user, i}
+            <div>
+                {i + 1}.
+                {user.username}:
+                {user.points}
+            </div>
+        {/each}
+    </div>
 </div>
