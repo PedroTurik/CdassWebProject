@@ -1,110 +1,16 @@
 <script lang="ts">
     import { page } from "$app/stores";
-    import {
-        collection,
-        doc,
-        getDoc,
-        getDocs,
-        increment,
-        limit,
-        query,
-        setDoc,
-        updateDoc,
-        where,
-    } from "firebase/firestore";
-    import type { PageData } from "./$types";
-    import { db, user, userData } from "$lib/firebase";
-    import { error } from "@sveltejs/kit";
+    import type { ActionData, PageData } from "./$types";
+    import { user, userData } from "$lib/firebase";
+    import AuthCheck from "$lib/components/AuthCheck.svelte";
 
     export let data: PageData;
     let problemId: number = +$page.url.pathname.split("/")[2];
-    let answer = "";
 
-    let error_visible = false;
-    let answered_visible = false;
-    let success_visible = false;
-
-    async function confirmAnswer(problemData: ProblemData) {
-        if (!$user) {
-            throw error(420, "heyheyhye");
-        }
-        const userProblemData: UserProblemData = {
-            code: "ITS NOT WORKING CURRENTLY TODO",
-            problem_id: problemId,
-            rating: 0,
-            uid: $user.uid,
-        };
-        const userName = $userData?.username;
-        const ref = doc(db, "user_problem", userName + "-" + problemId);
-        await setDoc(ref, userProblemData);
-
-        const userRef = doc(db, "users", $user.uid);
-        updateDoc(userRef, {
-            points: increment(problemData.points),
-        });
-    }
-
-    async function checkAnswer() {
-        console.log("aAAAAAA");
-        const userName = $userData?.username;
-        const ref = doc(db, "user_problem", userName + "-" + problemId);
-        const exists = await getDoc(ref).then((doc) => doc.exists());
-        if (exists) {
-            answered_visible = true;
-            setTimeout(() => {
-                answered_visible = false;
-            }, 3000);
-            return;
-        }
-
-        const q = query(
-            collection(db, "problem"),
-            where("id", "==", problemId),
-            limit(1)
-        );
-
-        const snapshot = await getDocs(q);
-        const problemData = snapshot.docs[0]?.data() as ProblemData;
-        if (problemData.answer == answer) {
-            success_visible = true;
-            confirmAnswer(problemData);
-        } else {
-            error_visible = true;
-            setTimeout(() => {
-                error_visible = false;
-            }, 3000);
-        }
-    }
+    export let form: ActionData;
 </script>
 
-<div class="text-7xl text-accent text-center py-10">
-    {data.title}
-</div>
-
-<div class="mx-32 whitespace-pre-wrap">
-    {data.text}
-</div>
-
-
-    PROBLEM HEEERE
-
-<form
-    class="space-y-5 text-center my-20"
->
-    <input
-        bind:value={answer}
-        on:input={() => console.log(answer)}
-        type="text"
-        placeholder="Answer"
-        class="input input-bordered input-success"
-    />
-
-    <button class="btn btn-success">
-        enviar resposta
-    </button>
-</form>
-
-{#if error_visible}
+{#if form?.status == 'wrong'}
     <div class="alert alert-error">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -120,7 +26,7 @@
         >
         <span>Resposta Errada</span>
     </div>
-{:else if answered_visible}
+{:else if form?.status == 'answered'}
     <div class="alert alert-warning">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -136,7 +42,7 @@
         >
         <span>Você já respondeu esse desafio</span>
     </div>
-{:else if success_visible}
+{:else if form?.status == 'success'}
     <div class="alert alert-success">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -153,3 +59,23 @@
         <span>Parabén, você acertou, pode checar seus pontos</span>
     </div>
 {/if}
+<div class="text-7xl text-accent text-center py-10">
+    {data.title}
+</div>
+
+<div class="mx-32 whitespace-pre-wrap">
+    {data.text}
+</div>
+
+<AuthCheck>
+    <form class="text-center my-10" method="POST" >
+        <input type="hidden" name="username" value={$userData?.username}>
+        <input type="hidden" name="problemId" value={problemId}>
+        <input type="hidden" name="uid" value={$user?.uid}>
+        <input type="text" name="answer" class="input input-success" />
+        <button class="btn btn-success">
+            checar resposta</button
+        >
+    </form>
+</AuthCheck>
+
