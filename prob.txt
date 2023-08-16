@@ -1,0 +1,81 @@
+- "Feliz dia das crianças Róbson!"
+
+Finalmente! Você pula de alegria, agradece, pega o pacote da mão de sua mãe e vai correndo pro quarto. 
+Após meses pedindo, você enfim ganhou seu Simon(link p wiki)!
+
+No entanto, ao abrir o pacote, voce percebe que o jogo que você recebeu é um pouco diferente:
+- Ao invés dos tradicionais 4 botões, existem 5 botões, cada um com um símbolo: "=", "-", "0", "1", "2";
+- Ao ligar o jogo, os símbolos começam a piscar em uma ordem aparentemente aleatória, e então de repetente todas as luzes piscam ao mesmo tempo.
+- Após várias dessas sequencias e piscadas, o programa para, e o display mostra a pergunta: "Qual a soma dos comandos?"
+- Sempre que o jogo é desligado e então ligado, a sequência é a mesma, e a pergunta é refeita.
+
+Buscando sentido nas estranhas combinações, você decide anotar os símbolos na ordem que eles aparecem, e toda vez que as luzes piscam juntas, você passa para a próxima linha do caderno. 
+A folha do caderno pode ser vista no input do problema.
+
+Após tentar apertar alguns botões sem sucesso, você descobre uma explicação no verso do dispositivo:
+
+-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+
+- SIMON(Super Importante Modo de Observar os Números) é uma forma especial de representação numérica! É super fácil, veja:
+
+-> SIMON usa potências de 5 ao invés de 10 para representar os números.
+-> Da direita para a esquerda, você tem uma casa representando 1, 5, 25, 125, 625 e assim por diante.
+-> Os dígitos são representados pelos mesmos cinco símbolos nos botões do jogo.
+-> Cada um desses símbolos possui um valor:
+
+    "=" -> -2
+    "-" -> -1
+    "0" ->  0
+    "1" ->  1
+    "2" ->  2
+
+-> Por isso, o valor de dez são dois 5 e nenhum 1. Então, em SIMON, ele é representado por "20".
+    Já o valor de 8, pode ser representado por "2=", pois ele é (2 * 5) + (-2 * 1).
+
+-> Abaixo segue uma tabela com a representação de alguns números em decimal e sua representação em SIMON:
+
+  Decimal          SIMON
+       -2              =
+       -1              -
+        0              0
+        1              1
+        2              2
+        3             1=
+        4             1-
+        5             10
+        6             11
+        7             12
+        8             2=
+        9             2-
+       10             20
+       15            1=0
+       20            1-0
+     2022         1=11-2
+    12345        1-0---0
+314159265  1121-1110-1=0
+
+Baseado nesse processo, os seguintes números em SIMON podem ser somados:
+
+ SIMON  Decimal
+1=-0-2     1747
+ 12111      906
+  2=0=      198
+    21       11
+  2=01      201
+   111       31
+ 20012     1257
+   112       32
+ 1=-1=      353
+  1-12      107
+    12        7
+    1=        3
+   122       37
+
+Em decimais, a soma desses valores é 4890. 
+
+-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/
+
+Agora que você entende como o SIMON funciona, basta inserir a resposta!
+
+Qual a soma da sequência de movimentos que o seu Simon segue repetindo? 
+Lembre-se que você deve informar ao Simon usando seus botões ("=", "-", "0", "1", "2").

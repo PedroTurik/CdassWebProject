@@ -10,7 +10,7 @@
     await sleep(1000);
     const hello = "Hello, " + ($userData?.username ?? "world") + "...";
     let hello_size = hello.length;
-    const title = "Clube de Algorítmos";
+    const title = "Clube de Algoritmos";
 
     for (const c of hello) {
       await sleep(100);

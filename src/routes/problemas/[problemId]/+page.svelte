@@ -5,6 +5,7 @@
     import AuthCheck from "$lib/components/AuthCheck.svelte";
     import { error } from "@sveltejs/kit";
     import { enhance } from "$app/forms";
+    import BegginerCheck from "$lib/components/BegginerCheck.svelte";
 
     export let data: PageData;
     let problemId: number = +$page.url.pathname.split("/")[2];
@@ -16,8 +17,9 @@
         if (!wnd) {
             throw error(500, 'i have no clue')
         }
-        
+
         wnd.document.write(data.input);
+        wnd.document.body.style.whiteSpace = "pre-wrap";
     }
 
 </script>
@@ -85,14 +87,16 @@
 
 <div class="w-1/5 m-auto">
     <AuthCheck>
-        <form class="flex flex-row text-center my-10" method="POST" use:enhance>
-            <input type="hidden" name="username" value={$userData?.username}>
-            <input type="hidden" name="problemId" value={problemId}>
-            <input type="text" name="answer" class="input input-success" />
-            <button class="btn btn-success">
-                checar resposta</button
-            >
-        </form>
+        <BegginerCheck check={data.begginer}>
+            <form class="flex flex-row text-center my-10" method="POST" use:enhance>
+                <input type="hidden" name="username" value={$userData?.username}>
+                <input type="hidden" name="problemId" value={problemId}>
+                <input type="text" name="answer" class="input input-success" />
+                <button class="btn btn-success">
+                    checar resposta</button
+                >
+            </form>
+        </BegginerCheck>
     </AuthCheck>
 </div>
 

@@ -22,9 +22,11 @@
                 {#each data.problems as p}
                     <tr>
                         <th>{p.id}</th>
-                        <td>
-                            <a href="/problemas/{p.id}">{p.title}</a>
-                        </td>
+                        <a href="/problemas/{p.id}">
+                            <td class="hover:bg-base-200">
+                                {p.title}
+                            </td>
+                        </a>
                         <td>{p.points}</td>
                     </tr>
                 {/each}
@@ -47,9 +49,11 @@
                 {#each data.begginerProblems as p}
                     <tr>
                         <th>{p.id}</th>
-                        <td>
-                            <a href="/problemas/{p.id}">{p.title}</a>
-                        </td>
+                        <a href="/problemas/{p.id}">
+                            <td class="hover:bg-base-200">
+                                {p.title}
+                            </td>
+                        </a>
                         <td>{p.points}</td>
                     </tr>
                 {/each}
@@ -82,7 +86,7 @@
                 />
                 <div class="form-control text-right">
                     <label class="cursor-pointer label ml-auto">
-                        <span class="label-text pr-4">Remember me</span>
+                        <span class="label-text pr-4">Iniciante</span>
                         <input
                             name="begginer-check"
                             type="checkbox"
