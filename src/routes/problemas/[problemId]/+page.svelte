@@ -15,16 +15,49 @@
     function viewInput() {
         let wnd = window.open("about:blank", "", "_blank");
         if (!wnd) {
-            throw error(500, 'i have no clue')
+            throw error(500, "i have no clue");
         }
 
         wnd.document.write(data.input);
         wnd.document.body.style.whiteSpace = "pre-wrap";
     }
-
 </script>
 
-{#if form?.status == 'wrong'}
+<div class="text-7xl text-accent text-center py-10">
+    {data.title}
+</div>
+
+<div class="mx-32 whitespace-pre-wrap">
+    {data.text}
+</div>
+
+<div>
+    <button on:click={viewInput} class="btn btn-secondary m-10">
+        Ver input
+    </button>
+</div>
+
+<div class="w-1/5 m-auto">
+    <AuthCheck>
+        <BegginerCheck check={data.begginer}>
+            <form
+                class="flex flex-row text-center my-10"
+                method="POST"
+                use:enhance
+            >
+                <input
+                    type="hidden"
+                    name="username"
+                    value={$userData?.username}
+                />
+                <input type="hidden" name="problemId" value={problemId} />
+                <input type="text" name="answer" class="input input-success" />
+                <button class="btn btn-success"> checar resposta</button>
+            </form>
+        </BegginerCheck>
+    </AuthCheck>
+</div>
+{#if form?.status == "wrong"}
     <div class="alert alert-error">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -40,7 +73,7 @@
         >
         <span>Resposta Errada</span>
     </div>
-{:else if form?.status == 'answered'}
+{:else if form?.status == "answered"}
     <div class="alert alert-warning">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -56,7 +89,7 @@
         >
         <span>Você já respondeu esse desafio</span>
     </div>
-{:else if form?.status == 'success'}
+{:else if form?.status == "success"}
     <div class="alert alert-success">
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -73,30 +106,3 @@
         <span>Parabén, você acertou, pode checar seus pontos</span>
     </div>
 {/if}
-<div class="text-7xl text-accent text-center py-10">
-    {data.title}
-</div>
-
-<div class="mx-32 whitespace-pre-wrap">
-    {data.text}
-</div>
-
-<div>
-    <button on:click={viewInput} class="btn btn-secondary m-10"> Ver input </button>
-</div>
-
-<div class="w-1/5 m-auto">
-    <AuthCheck>
-        <BegginerCheck check={data.begginer}>
-            <form class="flex flex-row text-center my-10" method="POST" use:enhance>
-                <input type="hidden" name="username" value={$userData?.username}>
-                <input type="hidden" name="problemId" value={problemId}>
-                <input type="text" name="answer" class="input input-success" />
-                <button class="btn btn-success">
-                    checar resposta</button
-                >
-            </form>
-        </BegginerCheck>
-    </AuthCheck>
-</div>
-
