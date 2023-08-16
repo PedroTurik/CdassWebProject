@@ -78,8 +78,10 @@ async function confirmAnswer(problemData: ProblemData, username: string, problem
     const userRef = adminDB.collection("users").doc(uid)
     const problemRef = adminDB.collection("problems").doc(problemId)
     batch.set(answerRef, userProblemData)
-    batch.update(userRef, { points: FieldValue.increment(problemData.points)})
-    batch.update(problemRef, { points: FieldValue.increment(-5)})
+    if (problemData.points > 0){
+      batch.update(userRef, { points: FieldValue.increment(problemData.points)})
+      batch.update(problemRef, { points: FieldValue.increment(-5)})
+    }
     batch.commit()
   } catch (e) {
     throw error(500, "Error trying to update datase with answer")
