@@ -2,11 +2,11 @@ interface UserData {
     username: string;
     photoURL: string;
     points: number;
+    chad_points: number;
     admin: boolean;
     newbie: boolean;
 }
 
-type RankUserData = Pick<UserData, "username" | "points">
 
 interface ProblemData {
     title: string;

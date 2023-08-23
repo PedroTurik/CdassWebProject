@@ -6,10 +6,9 @@ export const load = (async () => {
 
     const collectionRef = collection(db, "users");
 
-    const queryRefIntermediate = query(
+    const queryRefAdvanced = query(
         collectionRef,
-        where("newbie", "==", false),
-        orderBy("points", "desc"),
+        orderBy("chad_points", "desc"),
         limit(10)
     );
     const queryRefNewbie = query(
@@ -19,24 +18,23 @@ export const load = (async () => {
         limit(10)
     );
 
-    const snapIntermediate = await getDocs(queryRefIntermediate);
+    const snapAdvanced = await getDocs(queryRefAdvanced);
     const snapNewbie = await getDocs(queryRefNewbie);
 
-    const interRank = [] as RankUserData[];
-    const begginerRank = [] as RankUserData[];
+    const advancedRank = [] as UserData[];
+    const begginerRank = [] as UserData[];
 
-    snapIntermediate.docs?.forEach((doc) => {
-        interRank.push(doc.data() as UserData);
+    snapAdvanced.docs?.forEach((doc) => {
+        advancedRank.push(doc.data() as UserData);
     })
 
     snapNewbie.docs?.forEach((doc) => {
-        const data = doc.data() as UserData;
-        begginerRank.push({username: data.username, points: data.points});
+        begginerRank.push(doc.data() as UserData);
     })
 
 
     return {
-        interRank: interRank,
+        advancedRank: advancedRank,
         begginerRank: begginerRank
     };
 }) satisfies PageLoad;

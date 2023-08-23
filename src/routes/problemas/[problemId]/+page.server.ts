@@ -47,7 +47,7 @@ export const actions: Actions = {
     const exists = docRef.exists;
 
     if (exists) {
-      return {status: "answered"};
+      return { status: "answered" };
     }
 
     const snap = await adminDB.collection("problems").where("id", "==", +problemId).limit(1).get();
@@ -55,16 +55,21 @@ export const actions: Actions = {
 
     const problemData = snap.docs[0]?.data() as ProblemData;
     if (problemData.answer == answer) {
-      confirmAnswer(problemData, username, problemId, uid);
-      return {status: "success"};
+      try {
+        await confirmAnswer(problemData, username, problemId, uid);
+      } catch (error) {
+        console.log(error);
+
+      }
+      return { status: "success" };
 
     } else {
-      return {status: "wrong"};
+      return { status: "wrong" };
     }
   }
 };
 
-async function confirmAnswer(problemData: ProblemData, username: string, problemId: string, uid: string ) {
+async function confirmAnswer(problemData: ProblemData, username: string, problemId: string, uid: string) {
   const userProblemData: UserProblemData = {
     code: "ITS NOT WORKING CURRENTLY TODO",
     problem_id: +problemId,
@@ -72,22 +77,21 @@ async function confirmAnswer(problemData: ProblemData, username: string, problem
     uid: uid,
   };
 
-  try {
-    const batch = adminDB.batch();
-    const answerRef = adminDB.collection("user_problem").doc(username + "-" + problemId)
-    const userRef = adminDB.collection("users").doc(uid)
-    const problemRef = adminDB.collection("problems").doc(problemId)
-    batch.set(answerRef, userProblemData)
-    if (problemData.points > 0){
-      batch.update(userRef, { points: FieldValue.increment(problemData.points)})
-      batch.update(problemRef, { points: FieldValue.increment(-5)})
-    }
-    batch.commit()
-  } catch (e) {
-    throw error(500, "Error trying to update datase with answer")
+  const batch = adminDB.batch();
+  const answerRef = adminDB.collection("user_problem").doc(username + "-" + problemId)
+  const userRef = adminDB.collection("users").doc(uid)
+  const problemRef = adminDB.collection("problems").doc(problemId)
+  batch.set(answerRef, userProblemData)
+  const userUpdate =
+    problemData.begginer ?
+      { points: FieldValue.increment(problemData.points) } :
+      { chad_points: FieldValue.increment(problemData.points) }
+
+  batch.update(userRef, userUpdate)
+
+  if (problemData.points > 30) {
+    batch.update(problemRef, { points: FieldValue.increment(-5) })
   }
-
-
-
+  batch.commit()
 
 }

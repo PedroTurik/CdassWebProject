@@ -14,6 +14,7 @@
     <div class="flex flex-col space-y-11">
     
         <div class="text-success text-xl mx-auto"> Pontos Totais: {$userData?.points}</div>
+        <div class="text-success text-xl mx-auto"> Chad Points Totais: {$userData?.chad_points}</div>
     
         <a href="/" class="mx-auto">
             <button class="btn btn-primary" on:click={signOutSSR}>Sign Out</button>
