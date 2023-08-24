@@ -55,8 +55,12 @@ export const actions: Actions = {
 
     const problemData = snap.docs[0]?.data() as ProblemData;
     if (problemData.answer == answer) {
-
-      await confirmAnswer(problemData, username, problemId, uid);
+      try {
+        
+        await confirmAnswer(problemData, username, problemId, uid);
+      } catch (_) {
+        throw error(444, "Resposta certa mas um erro ocorreu, tente se deslogar e fechar o site antes de tentar novamente")
+      }
 
       return { status: "success" };
 
