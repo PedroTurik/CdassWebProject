@@ -55,12 +55,9 @@ export const actions: Actions = {
 
     const problemData = snap.docs[0]?.data() as ProblemData;
     if (problemData.answer == answer) {
-      try {
-        await confirmAnswer(problemData, username, problemId, uid);
-      } catch (error) {
-        console.log(error);
+      
+      await confirmAnswer(problemData, username, problemId, uid);
 
-      }
       return { status: "success" };
 
     } else {

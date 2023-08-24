@@ -37,6 +37,7 @@
       admin: false,
       newbie: begginer,
       points: 0,
+      chad_points: 0
     });
 
     await batch.commit();

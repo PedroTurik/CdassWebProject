@@ -90,12 +90,14 @@
 </div>
 <div class="w-1/5 m-auto">
     <AuthCheck>
-        <form class="flex flex-row text-center my-10" method="POST" use:enhance>
-            <input type="hidden" name="username" value={$userData?.username} />
-            <input type="hidden" name="problemId" value={problemId} />
-            <input type="text" name="answer" class="input input-success" />
-            <button class="btn btn-success"> checar resposta</button>
-        </form>
+        <BegginerCheck check={data.begginer}>
+            <form class="flex flex-row text-center my-10" method="POST" use:enhance>
+                <input type="hidden" name="username" value={$userData?.username} />
+                <input type="hidden" name="problemId" value={problemId} />
+                <input type="text" name="answer" class="input input-success" />
+                <button class="btn btn-success"> checar resposta</button>
+            </form>
+        </BegginerCheck>
     </AuthCheck>
     <em />
 </div>
