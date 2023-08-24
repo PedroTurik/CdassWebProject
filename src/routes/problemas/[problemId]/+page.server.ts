@@ -38,8 +38,8 @@ export const actions: Actions = {
   default: async ({ locals, request }) => {
 
     const data = await request.formData();
-    const username = data.get('username') as string;
     const uid = locals.userID as string;
+    const username = data.get('username') as string;
     const problemId = data.get('problemId') as string;
     const answer = data.get('answer') as string;
 
@@ -55,7 +55,7 @@ export const actions: Actions = {
 
     const problemData = snap.docs[0]?.data() as ProblemData;
     if (problemData.answer == answer) {
-      
+
       await confirmAnswer(problemData, username, problemId, uid);
 
       return { status: "success" };
