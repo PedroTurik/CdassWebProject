@@ -16,6 +16,7 @@ interface ProblemData {
     answer: string;
     input: string;
     begginer: boolean;
+    semester: number;
 }
 
 type TableProblemData = Pick<ProblemData, "id" | "title" | "points">;

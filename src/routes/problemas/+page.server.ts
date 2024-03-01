@@ -7,7 +7,11 @@ import { adminDB } from '$lib/server/admin';
 
 export const load = (async () => {
 
-    const querySnapshot = await getDocs(collection(db, "problems"));
+    // const querySnapshot = (await getDocs(collection(db, "problems")));
+
+    // get problems with semester = 20241
+
+    const querySnapshot = await adminDB.collection("problems").where("semester", "==", 20241).get();
 
     const problems: TableProblemData[] = [];
     const begginerProblems: TableProblemData[] = [];
@@ -66,6 +70,7 @@ export const actions = {
             id: id,
             input: input,
             begginer: begginer,
+            semester: 20241
         }
 
         const docAdded = await adminDB.collection("problems").doc("" + id).set(problemData)
